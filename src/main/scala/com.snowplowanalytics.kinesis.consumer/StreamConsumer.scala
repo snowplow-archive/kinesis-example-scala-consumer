@@ -55,7 +55,7 @@ case class StreamConsumer(config: Config) {
 
     private val stream = consumer.getConfig("stream")
     val streamName = stream.getString("name")
-    val streamDataType = stream.getString("data_type")
+    val streamDataType = stream.getString("data-type")
   }
 
   // Initialize
