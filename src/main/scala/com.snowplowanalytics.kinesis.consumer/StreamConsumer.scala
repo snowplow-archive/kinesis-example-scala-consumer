@@ -39,6 +39,9 @@ import scala.concurrent.{Future,Await,TimeoutException}
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.duration._
 
+// Thrift.
+import org.apache.thrift.TDeserializer
+
 /**
  * The core logic for the Kinesis event consumer.
  */
@@ -61,6 +64,7 @@ case class StreamConsumer(config: Config) {
   // Initialize
   private implicit val kinesis = createKinesisClient(ConsumerConfig.awsAccessKey, ConsumerConfig.awsSecretKey)
   private var stream: Option[Stream] = None
+  private val thriftDeserializer = new TDeserializer()
 
   // Print all records in the current stream.
   def printRecords() {
@@ -76,11 +80,20 @@ case class StreamConsumer(config: Config) {
         iterator => implicitExecute(iterator.nextRecords)
       })
     } yield records
-    val nextRecordIter = Await.result(getRecords, 30.seconds)
-    for (nextRecord <- nextRecordIter) {
-      for (record <- nextRecord.records) {
+    val shards = Await.result(getRecords, 30.seconds)
+    for (shard <- shards) {
+      for (record <- shard.records) {
         println("sequenceNumber: " + record.sequenceNumber)
-        println("data: " + new String(record.data.array()))
+        if (ConsumerConfig.streamDataType == "string") {
+          println("data: " + new String(record.data.array()))
+        } else if (ConsumerConfig.streamDataType == "thrift") {
+          var data: generated.StreamData = new generated.StreamData()
+          thriftDeserializer.deserialize(data, record.data.array())
+          println("data: " + data)
+        } else {
+          throw new RuntimeException(
+            "data-type configuration must be 'string' or 'thrift'.")
+        }
         println("partitionKey: " + record.partitionKey)
       }
     }

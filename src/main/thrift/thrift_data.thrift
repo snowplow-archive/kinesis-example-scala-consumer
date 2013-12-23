@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-namespace java com.snowplowanalytics.kinesis.producer.generated
+namespace java com.snowplowanalytics.kinesis.consumer.generated
 
 struct StreamData {
   1: string name,
