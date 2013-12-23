@@ -10,7 +10,7 @@
  * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the Apache License Version 2.0 for the specific language governing permissions and limitations there under.
  */
-package com.snowplowanalytics.kinesis.producer
+package com.snowplowanalytics.kinesis.consumer
 
 // Java
 import java.io.File
@@ -22,9 +22,9 @@ import org.clapper.argot._
 import com.typesafe.config.{Config, ConfigFactory}
 
 /**
- * The CLI entrypoint for the ProducerApp
+ * The CLI entrypoint for the ConsumerApp
  */
-object ProducerApp {
+object ConsumerApp extends App {
 
     // Argument specifications
   import ArgotConverters._
@@ -39,10 +39,6 @@ object ProducerApp {
       generated.Settings.organization)
     )
   )
-
-  // Optional argument to create the stream
-  val create = parser.flag[Boolean](List("create"),
-                                    "Create the stream before producing events")
 
   // Optional config argument
   val config = parser.option[Config](List("config"),
@@ -59,26 +55,11 @@ object ProducerApp {
       }
   }
 
-  /**
-   * Main Producer program
-   */
-  def main(args:Array[String]) {
+  // Grab the command line arguments
+  parser.parse(args)
+  val conf = config.value.getOrElse(ConfigFactory.load("default")) // Fall back to the /resources/default.conf
 
-    // Grab the command line arguments
-    parser.parse(args)
-    val crte = create.value.getOrElse(false)
-    val conf = config.value.getOrElse(ConfigFactory.load("default")) // Fall back to the /resources/default.conf
+  val sp = StreamConsumer(conf)
 
-    val sp = StreamProducer(conf)
-
-    // If we have --create, then create the stream first
-    if (crte) {
-      sp.createStream()
-    }
-
-    // Define and run our pricing mechanism
-    sp.produceStream()
-    
-    sp.printRecords()
-  }
+  sp.printRecords()
 }
