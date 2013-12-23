@@ -17,7 +17,10 @@ object Dependencies {
   val resolutionRepos = Seq(
     // For scala-util
     "Snowplow Analytics Maven repo" at "http://maven.snplow.com/releases/",
-    "BintrayJCenter" at "http://jcenter.bintray.com"
+    // For scalazon
+    "BintrayJCenter" at "http://jcenter.bintray.com",
+    // For sbt-thrift
+    "bigtoast-github" at "http://bigtoast.github.com/repo/"
   )
 
   object V {
@@ -26,6 +29,7 @@ object Dependencies {
     val httpCore   = "4.3"
     val httpClient = "4.3.1"
     val jacksonCore = "2.3.0"
+    val slf4j      = "1.7.5"
     // val awsSdk  = "1.6.4" Only available on Amazon Kinesis private beta, so this is an unmanaged lib
     // Scala
     val argot      = "1.0.1"
@@ -34,6 +38,9 @@ object Dependencies {
     val scalazon   = "0.3"
     // Scala (test only)
     val specs2     = "2.3.4"
+    // Scala compile only for sbt-thrift.
+    val commonsLang3 = "3.1"
+    val thrift = "0.9.0"
     // Add versions for your additional libraries here...
   }
 
@@ -43,6 +50,7 @@ object Dependencies {
     val httpCore    = "org.apache.httpcomponents"  %  "httpcore"        % V.httpCore
     val httpClient  = "org.apache.httpcomponents"  %  "httpclient"      % V.httpClient
     val jacksonCore = "com.fasterxml.jackson.core" % "jackson-core"     % V.jacksonCore
+    val slf4j       = "org.slf4j"                  % "slf4j-simple"     % V.slf4j
     // Scala
     val argot       = "org.clapper"                %% "argot"           % V.argot
     val config      = "com.typesafe"               %  "config"          % V.config
@@ -50,6 +58,9 @@ object Dependencies {
     val scalazon    = "io.github.cloudify"         %% "scalazon"        % V.scalazon
     // Scala (test only)
     val specs2      = "org.specs2"                 %% "specs2"          % V.specs2     % "test"
+    // Scala compile only for sbt-thrift.
+    val commonsLang3 = "org.apache.commons" % "commons-lang3" % V.commonsLang3 % "compile"
+    val thrift = "org.apache.thrift" % "libthrift" % V.thrift % "compile"
     // Add additional libraries from mvnrepository.com (SBT syntax) here...
   }
 }

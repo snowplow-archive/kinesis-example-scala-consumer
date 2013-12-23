@@ -50,5 +50,8 @@ object BuildSettings {
     }
   )
 
-  lazy val buildSettings = basicSettings ++ scalifySettings ++ sbtAssemblySettings
+  import com.github.bigtoast.sbtthrift.ThriftPlugin
+
+  lazy val buildSettings = basicSettings ++ scalifySettings ++
+    sbtAssemblySettings ++ ThriftPlugin.thriftSettings
 }
