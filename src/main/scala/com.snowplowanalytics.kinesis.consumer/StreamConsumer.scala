@@ -81,23 +81,28 @@ case class StreamConsumer(config: Config) {
       })
     } yield records
     val recordChunks = Await.result(getRecords, 30.seconds)
+
+    val printData: (Array[Byte] => Unit) =
+      if (ConsumerConfig.streamDataType == "string") printDataString
+      else if (ConsumerConfig.streamDataType == "thrift") printDataThrift
+      else throw new RuntimeException(
+          "data-type configuration must be 'string' or 'thrift'.")
     for (recordChunk <- recordChunks) {
       println("==Record chunk.")
       for (record <- recordChunk.records) {
         println("sequenceNumber: " + record.sequenceNumber)
-        if (ConsumerConfig.streamDataType == "string") {
-          println("data: " + new String(record.data.array()))
-        } else if (ConsumerConfig.streamDataType == "thrift") {
-          var data: generated.StreamData = new generated.StreamData()
-          thriftDeserializer.deserialize(data, record.data.array())
-          println("data: " + data)
-        } else {
-          throw new RuntimeException(
-            "data-type configuration must be 'string' or 'thrift'.")
-        }
+        printData(record.data.array())
         println("partitionKey: " + record.partitionKey)
       }
     }
+  }
+
+  def printDataString(data: Array[Byte]) = println("data: " + new String(data))
+
+  def printDataThrift(data: Array[Byte]) = {
+    var deserializedData: generated.StreamData = new generated.StreamData()
+    thriftDeserializer.deserialize(deserializedData, data)
+    println("data: " + data)
   }
 
   /**
