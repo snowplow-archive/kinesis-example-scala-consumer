@@ -80,9 +80,10 @@ case class StreamConsumer(config: Config) {
         iterator => implicitExecute(iterator.nextRecords)
       })
     } yield records
-    val shards = Await.result(getRecords, 30.seconds)
-    for (shard <- shards) {
-      for (record <- shard.records) {
+    val recordChunks = Await.result(getRecords, 30.seconds)
+    for (recordChunk <- recordChunks) {
+      println("==Record chunk.")
+      for (record <- recordChunk.records) {
         println("sequenceNumber: " + record.sequenceNumber)
         if (ConsumerConfig.streamDataType == "string") {
           println("data: " + new String(record.data.array()))
