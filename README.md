@@ -77,9 +77,7 @@ Fork this project and adapt it into your own custom Kinesis event consumer.
 
 ## FAQ
 
-**Why isn't aws-java-sdk-1.6.4.jar included in this repo?**
-
-This file is only available to those on the Amazon Kinesis private beta.
+TODO
 
 ## Roadmap
 
