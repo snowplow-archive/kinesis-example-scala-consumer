@@ -30,7 +30,7 @@ object Dependencies {
     val httpClient = "4.3.1"
     val jacksonCore = "2.3.0"
     val slf4j      = "1.7.5"
-    // val awsSdk  = "1.6.4" Only available on Amazon Kinesis private beta, so this is an unmanaged lib
+    val awsSdk     = "1.6.10"
     // Scala
     val argot      = "1.0.1"
     val config     = "1.0.2"
@@ -51,6 +51,7 @@ object Dependencies {
     val httpClient  = "org.apache.httpcomponents"  %  "httpclient"      % V.httpClient
     val jacksonCore = "com.fasterxml.jackson.core" % "jackson-core"     % V.jacksonCore
     val slf4j       = "org.slf4j"                  % "slf4j-simple"     % V.slf4j
+    val awsSdk      = "com.amazonaws"              % "aws-java-sdk"     % V.awsSdk
     // Scala
     val argot       = "org.clapper"                %% "argot"           % V.argot
     val config      = "com.typesafe"               %  "config"          % V.config

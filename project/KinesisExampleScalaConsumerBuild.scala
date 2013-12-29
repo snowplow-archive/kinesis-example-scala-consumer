@@ -39,7 +39,8 @@ object KinesisExampleScalaConsumerBuild extends Build {
         Libraries.specs2,
         Libraries.commonsLang3,
         Libraries.thrift,
-        Libraries.slf4j
+        Libraries.slf4j,
+        Libraries.awsSdk
         // Add your additional libraries here (comma-separated)...
       )
     )
