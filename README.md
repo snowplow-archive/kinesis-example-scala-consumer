@@ -14,6 +14,7 @@ enrichment processes to run on Kinesis.
 Assuming you already have [SBT 0.13.0] [sbt] installed:
 
     $ git clone git://github.com/snowplow/kinesis-example-scala-consumer.git
+    $ sbt assembly
     
 The 'fat jar' is now available as:
 
