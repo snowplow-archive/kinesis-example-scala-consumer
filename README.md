@@ -9,22 +9,12 @@ This was built by the [Snowplow Analytics] [snowplow] team,
 as part of a proof of concept for porting our event collection and
 enrichment processes to run on Kinesis.
 
-**Please note:** Amazon Kinesis is currently in private beta.
-Being on the Kinesis private beta is a pre-requisite to building and
-running this project.
-
 ## Building
 
 Assuming you already have [SBT 0.13.0] [sbt] installed:
 
     $ git clone git://github.com/snowplow/kinesis-example-scala-consumer.git
     
-Now manually copy the relevant jar from your Amazon Kinesis SDK Preview:
-
-    $ cd kinesis-example-scala-consumer
-    $ cp ~/downloads/AmazonKinesisSDK-preview/aws-java-sdk-1.6.4/lib/aws-java-sdk-1.6.4.jar lib/
-    $ sbt assembly
-
 The 'fat jar' is now available as:
 
     target/scala-2.10/kinesis-example-scala-producer-0.0.1.jar
@@ -46,7 +36,6 @@ Usage: kinesis-example-scala-consumer[OPTIONS]
 OPTIONS
 --config filename  Configuration file. Defaults to "resources/default.conf"
                    (within .jar) if not set
---create           Create the stream before producing events
 ```
 
 ## Running
