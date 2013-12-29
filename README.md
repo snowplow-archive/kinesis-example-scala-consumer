@@ -14,12 +14,9 @@ enrichment processes to run on Kinesis.
 Assuming you already have [SBT 0.13.0] [sbt] installed:
 
     $ git clone git://github.com/snowplow/kinesis-example-scala-consumer.git
-    $ sbt assembly
+    $ cd kinesis-example-scala-consumer
+    $ sbt compile
     
-The 'fat jar' is now available as:
-
-    target/scala-2.10/kinesis-example-scala-producer-0.0.1.jar
-
 ## Unit testing
 
 To come.
@@ -59,21 +56,11 @@ You can leave the rest of the settings for now.
 Next, run the event consumer, making sure to specify your new config file and
 create a new stream:
 
-    $ java -jar target/scala-2.10/kinesis-example-scala-consumer-0.0.1.jar --config ./my.conf --create 
+    $ sbt "run --config my.conf"
 
 ## Next steps
 
 Fork this project and adapt it into your own custom Kinesis event consumer.
-
-## FAQ
-
-TODO
-
-## Roadmap
-
-TODO
-
-If you would like to help with any of these, feel free to submit a pull request.
 
 ## Copyright and license
 
