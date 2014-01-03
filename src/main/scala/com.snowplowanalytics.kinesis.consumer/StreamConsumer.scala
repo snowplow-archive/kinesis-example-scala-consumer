@@ -25,7 +25,11 @@ import com.amazonaws.auth.{
 // Scalazon (for Kinesis interaction)
 import io.github.cloudify.scala.aws.kinesis.Client
 import io.github.cloudify.scala.aws.kinesis.Client.ImplicitExecution._
-import io.github.cloudify.scala.aws.kinesis.Definitions.{Stream,PutResult}
+import io.github.cloudify.scala.aws.kinesis.Definitions.{
+  Stream,
+  PutResult,
+  ShardIterator
+}
 import io.github.cloudify.scala.aws.kinesis.KinesisDsl._
 
 // Config
@@ -41,6 +45,8 @@ import scala.concurrent.duration._
 
 // Thrift.
 import org.apache.thrift.TDeserializer
+
+import scala.collection.mutable.MutableList
 
 /**
  * The core logic for the Kinesis event consumer.
@@ -71,29 +77,43 @@ case class StreamConsumer(config: Config) {
     if (stream.isEmpty) {
       stream = Some(Kinesis.stream(ConsumerConfig.streamName))
     }
-    val getRecords = for {
-      shards <- stream.get.shards.list
-      iterators <- Future.sequence(shards.map {
-        shard => implicitExecute(shard.iterator)
-      })
-      records <- Future.sequence(iterators.map {
-        iterator => implicitExecute(iterator.nextRecords)
-      })
-    } yield records
-    val recordChunks = Await.result(getRecords, 30.seconds)
-
     val printData: (Array[Byte] => Unit) =
       if (ConsumerConfig.streamDataType == "string") printDataString
       else if (ConsumerConfig.streamDataType == "thrift") printDataThrift
       else throw new RuntimeException(
           "data-type configuration must be 'string' or 'thrift'.")
-    for (recordChunk <- recordChunks) {
-      println("==Record chunk.")
-      for (record <- recordChunk.records) {
-        println("sequenceNumber: " + record.sequenceNumber)
-        printData(record.data.array())
-        println("partitionKey: " + record.partitionKey)
+    
+    // Initialize the shard iterators.
+    val initialShardIteratorsRequest = for {
+      shards <- stream.get.shards.list
+      initialShardIterator <- Future.sequence(shards.map {
+        shard => implicitExecute(shard.iterator)
+      })
+    } yield initialShardIterator
+    var shardIterators = Await.result(initialShardIteratorsRequest,
+      30.seconds).asInstanceOf[List[ShardIterator]]
+
+    // Continuously poll for records.
+    while (shardIterators != null) {
+      val recordChunksRequest = for {
+        recordChunkIterator <- Future.sequence(shardIterators.map {
+          iterator => implicitExecute(iterator.nextRecords)
+        })
+      } yield recordChunkIterator
+      val recordChunks = Await.result(recordChunksRequest, 30.seconds)
+      //println("recordChunks: " + recordChunks.toString)
+      val nextShardIterators = new MutableList[ShardIterator]()
+      for (recordChunk <- recordChunks) {
+        //println("==Record chunk:" + recordChunk.toString)
+        for (record <- recordChunk.records) {
+          println("sequenceNumber: " + record.sequenceNumber)
+          printData(record.data.array())
+          println("partitionKey: " + record.partitionKey)
+        }
+        nextShardIterators += recordChunk.nextIterator
       }
+      shardIterators = nextShardIterators.toList
+      Thread.sleep(1000)
     }
   }
 
@@ -102,7 +122,7 @@ case class StreamConsumer(config: Config) {
   def printDataThrift(data: Array[Byte]) = {
     var deserializedData: generated.StreamData = new generated.StreamData()
     thriftDeserializer.deserialize(deserializedData, data)
-    println("data: " + data)
+    println("data: " + deserializedData.toString)
   }
 
   /**
