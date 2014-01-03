@@ -10,5 +10,4 @@ src_managed/
 project/boot/
 project/plugins/project/
 
-# Because Kinesis is in private beta
-lib/aws-java-sdk-1.6.4.jar
+src/main/resources/AwsCredentials.properties
