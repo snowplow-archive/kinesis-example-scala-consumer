@@ -30,6 +30,7 @@ import com.amazonaws.services.kinesis.clientlibrary.interfaces.IRecordProcessorF
 import com.amazonaws.services.kinesis.clientlibrary.lib.worker.InitialPositionInStream;
 import com.amazonaws.services.kinesis.clientlibrary.lib.worker.KinesisClientLibConfiguration;
 import com.amazonaws.services.kinesis.clientlibrary.lib.worker.Worker;
+import com.amazonaws.services.kinesis.metrics.impl.NullMetricsFactory;
 
 
 /**
@@ -82,7 +83,7 @@ public final class SampleKinesisApplication {
         
         
         IRecordProcessorFactory recordProcessorFactory = new SampleRecordProcessorFactory();
-         Worker worker = new Worker(recordProcessorFactory, kinesisClientLibConfiguration);
+         Worker worker = new Worker(recordProcessorFactory, kinesisClientLibConfiguration, new NullMetricsFactory());
 
         int exitCode = 0;
         try {
