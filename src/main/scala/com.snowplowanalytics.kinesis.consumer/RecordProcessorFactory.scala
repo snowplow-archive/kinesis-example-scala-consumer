@@ -13,27 +13,14 @@
  * permissions and limitations under the License.
  */
 
-import com.amazonaws.services.kinesis.clientlibrary.interfaces.IRecordProcessor;
-import com.amazonaws.services.kinesis.clientlibrary.interfaces.IRecordProcessorFactory;
+import com.amazonaws.services.kinesis.clientlibrary.interfaces.{
+  IRecordProcessor,
+  IRecordProcessorFactory
+}
 
-/**
- * Used to create new record processors.
- */
-public class SampleRecordProcessorFactory implements IRecordProcessorFactory {
-    
-    /**
-     * Constructor.
-     */
-    public SampleRecordProcessorFactory() {
-        super();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public IRecordProcessor createProcessor() {
-        return new SampleRecordProcessor();
-    }
-
+class RecordProcessorFactory extends IRecordProcessorFactory {
+  @Override
+  def createProcessor: IRecordProcessor = {
+    return new RecordProcessor();
+  }
 }

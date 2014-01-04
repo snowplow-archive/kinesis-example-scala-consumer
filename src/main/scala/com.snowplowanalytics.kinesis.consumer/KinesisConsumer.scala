@@ -51,10 +51,10 @@ object KinesisConsumer extends App {
   // TODO: Replace this with AWS auth. from config.
   configure
   
-  println("Starting " + applicationName)
-  println("Running " + applicationName + " to process stream " + streamName)
+  println(s"Starting $applicationName")
+  println(s"Running $applicationName to process stream $streamName")
   
-  val recordProcessorFactory = new SampleRecordProcessorFactory()
+  val recordProcessorFactory = new RecordProcessorFactory()
   val worker = new Worker(
     recordProcessorFactory,
     kinesisClientLibConfiguration,
