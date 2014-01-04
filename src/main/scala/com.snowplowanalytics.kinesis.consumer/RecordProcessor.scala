@@ -42,7 +42,7 @@ public class SampleRecordProcessor implements IRecordProcessor {
     private static final int NUM_RETRIES = 10;
 
     // Checkpoint about once a minute
-    private static final long CHECKPOINT_INTERVAL_MILLIS = 60000L;
+    private static final long CHECKPOINT_INTERVAL_MILLIS = 1000L;
     private long nextCheckpointTimeInMillis;
     
     private final CharsetDecoder decoder = Charset.forName("UTF-8").newDecoder();
@@ -91,17 +91,17 @@ public class SampleRecordProcessor implements IRecordProcessor {
             for (int i = 0; i < NUM_RETRIES; i++) {
                 try {
                     // For this app, we interpret the payload as UTF-8 chars.
-                    data = decoder.decode(record.getData()).toString();
-                    LOG.info(record.getSequenceNumber() + ", " + record.getPartitionKey() + ", " + data);
+                    //data = decoder.decode(record.getData()).toString();
+                    LOG.info(record.getSequenceNumber() + ", " + record.getPartitionKey()); // + ", " + data);
 		    //
                     // Logic to process record goes here.
                     //
                     processedSuccessfully = true;
                     break;
-                } catch (CharacterCodingException e) {
+                } /* catch (CharacterCodingException e) {
                     LOG.error("Malformed data: " + data, e);
                     break;
-                } catch (Throwable t) {
+                } */ catch (Throwable t) {
                     LOG.warn("Caught throwable while processing record " + record, t);
                 }
                 
