@@ -1,26 +1,34 @@
-/*
- * Copyright 2012-2014 Amazon.com, Inc. or its affiliates. All Rights Reserved.
+ /*
+ * Copyright (c) 2013-2014 Snowplow Analytics Ltd. with significant
+ * portions copyright 2012-2014 Amazon.
+ * All rights reserved.
  *
- * Licensed under the Apache License, Version 2.0 (the "License").
- * You may not use this file except in compliance with the License.
- * A copy of the License is located at
+ * This program is licensed to you under the Apache License Version 2.0,
+ * and you may not use this file except in compliance with the Apache
+ * License Version 2.0.
+ * You may obtain a copy of the Apache License Version 2.0 at
+ * http://www.apache.org/licenses/LICENSE-2.0.
  *
- *  http://aws.amazon.com/apache2.0
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the Apache License Version 2.0 is distributed
+ * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied.
  *
- * or in the "license" file accompanying this file. This file is distributed
- * on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either
- * express or implied. See the License for the specific language governing
- * permissions and limitations under the License.
+ * See the Apache License Version 2.0 for the specific language
+ * governing permissions and limitations there under.
  */
+
+package com.snowplowanalytics.kinesis.consumer
 
 import com.amazonaws.services.kinesis.clientlibrary.interfaces.{
   IRecordProcessor,
   IRecordProcessorFactory
 }
 
-class RecordProcessorFactory extends IRecordProcessorFactory {
+class RecordProcessorFactory(config: KinesisConsumerConfig)
+    extends IRecordProcessorFactory {
   @Override
   def createProcessor: IRecordProcessor = {
-    return new RecordProcessor();
+    return new RecordProcessor(config);
   }
 }
