@@ -53,8 +53,7 @@ aws {
 
 You can leave the rest of the settings for now.
 
-Next, run the event consumer, making sure to specify your new config file and
-create a new stream:
+Next, run the event consumer, making sure to specify your new config file:
 
     $ sbt "run --config my.conf"
 
