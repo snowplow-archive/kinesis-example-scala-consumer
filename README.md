@@ -9,12 +9,12 @@ This was built by the [Snowplow Analytics] [snowplow] team,
 as part of a proof of concept for porting our event collection and
 enrichment processes to run on Kinesis.
 
-This has been built to run in conjunction wiht the 
+This has been built to run in conjunction with the 
 [kinesis-example-scala-producer] [producer].
 
 ## Pre-requisites
 
-This project requires Java 1.7 and SBT.
+This project requires Java 1.7 and SBT 0.13.0.
 
 If you are running Vagrant, you can run it using the Snowplow
 [dev environment] [dev-environment]. Make sure you run the [jvm-7] [jvm-7]
@@ -39,7 +39,7 @@ To come.
 
 ## Usage
 
-We recommend running the consumer *after* you have run the 
+We recommend running the producer *after* you have run the 
 [kinesis-example-scala-producer] [producer]. 
 
 The event producer has the following command-line interface:
