@@ -51,15 +51,16 @@ import com.amazonaws.services.kinesis.metrics.impl.NullMetricsFactory
 
 
 class KinesisConsumerConfig(config: Config) {
-  private val consumer = config.getConfig("consumer")
+  private val consumer = config.resolve.getConfig("consumer")
 
   private val aws = consumer.getConfig("aws")
   val accessKey = aws.getString("access-key")
   val secretKey = aws.getString("secret-key")
 
   private val stream = consumer.getConfig("stream")
-  val appName = stream.getString("app-name")
   val streamName = stream.getString("stream-name")
+  val appName = stream.getString("app-name")
+  println(appName)
   val initialPosition = stream.getString("initial-position")
   val streamDataType = stream.getString("data-type")
   val streamEndpoint = stream.getString("endpoint")
