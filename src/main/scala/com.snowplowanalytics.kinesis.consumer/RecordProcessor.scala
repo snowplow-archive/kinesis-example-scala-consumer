@@ -96,7 +96,9 @@ class RecordProcessor(config: KinesisConsumerConfig)
 
   private def printDataThrift(data: Array[Byte]) = {
     var deserializedData: generated.StreamData = new generated.StreamData()
-    thriftDeserializer.deserialize(deserializedData, data)
+    this.synchronized {
+      thriftDeserializer.deserialize(deserializedData, data)
+    }
     println("data: " + deserializedData.toString)
   }
 
