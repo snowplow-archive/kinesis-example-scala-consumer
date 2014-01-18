@@ -9,11 +9,27 @@ This was built by the [Snowplow Analytics] [snowplow] team,
 as part of a proof of concept for porting our event collection and
 enrichment processes to run on Kinesis.
 
+This has been built to run in conjunction with the 
+[kinesis-example-scala-producer] [producer].
+
+## Pre-requisites
+
+This project requires Java 1.7 and SBT 0.13.0.
+
+If you are running Vagrant, you can run it using the Snowplow
+[dev environment] [dev-environment]. Make sure you run the [jvm-7] [jvm-7]
+Ansible Playbook to install both the required Java version and SBT. 
+Instructions on using Ansible to run the different playbooks can be found on the 
+[dev environment README] [dev-env-readme].
+
 ## Building
 
-Assuming you already have [SBT 0.13.0] [sbt] installed:
+Clone the repo:
 
     $ git clone git://github.com/snowplow/kinesis-example-scala-consumer.git
+
+Then compile:
+
     $ cd kinesis-example-scala-consumer
     $ sbt compile
     
@@ -22,6 +38,9 @@ Assuming you already have [SBT 0.13.0] [sbt] installed:
 To come.
 
 ## Usage
+
+We recommend running the producer *after* you have run the 
+[kinesis-example-scala-producer] [producer]. 
 
 The event producer has the following command-line interface:
 
@@ -50,6 +69,11 @@ aws {
   secret-key: "cpf"
 }
 ```
+
+Make sure that the AWS credentials you use hav the permissions requried to:
+
+1. Request and read from the Kinesis stream specified in the config file
+2. Create tables in DynamoDB
 
 You can leave the rest of the settings for now.
 
@@ -80,5 +104,10 @@ limitations under the License.
 [sbt]: http://typesafe.artifactoryonline.com/typesafe/ivy-releases/org.scala-sbt/sbt-launch/0.13.0/sbt-launch.jar
 
 [kinesis-ui]: https://console.aws.amazon.com/kinesis/?
+[producer]: https://github.com/snowplow/kinesis-example-scala-producer
+[dev-environment]: https://github.com/snowplow/dev-environment
+[dev-env-readme]: https://github.com/snowplow/dev-environment/blob/master/README.md
+[jvm-7]: https://github.com/snowplow/ansible-playbooks/blob/master/generic/jvm/jvm-7.yaml
 
 [license]: http://www.apache.org/licenses/LICENSE-2.0
+
