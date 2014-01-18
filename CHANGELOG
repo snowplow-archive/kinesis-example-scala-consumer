@@ -1,3 +1,7 @@
+Version 0.0.2 (2014-01-18)
+--------------------------
+Added synchronize to work around Thrift de/serialization not being multithreaded (#8)
+
 Version 0.0.1 (2014-01-15)
 --------------------------
 Initial release of Kinesis Example Scala Consumer
