@@ -45,7 +45,7 @@ We recommend running the producer *after* you have run the
 The event producer has the following command-line interface:
 
 ```
-kinesis-example-scala-consumer: Version 0.0.1. Copyright (c) 2013, Snowplow
+kinesis-example-scala-consumer: Version 0.0.2. Copyright (c) 2013, Snowplow
 Analytics Ltd.
 
 Usage: kinesis-example-scala-consumer[OPTIONS]
