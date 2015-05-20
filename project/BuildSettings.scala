@@ -20,7 +20,7 @@ object BuildSettings {
     organization          :=  "Snowplow Analytics Ltd",
     version               :=  "0.0.2",
     description           :=  "An example event consumer for Amazon Kinesis",
-    scalaVersion          :=  "2.10.1",
+    scalaVersion          :=  "2.10.5",
     scalacOptions         :=  Seq("-deprecation", "-encoding", "utf8",
                                   "-feature"),
     scalacOptions in Test :=  Seq("-Yrangepos"),
